@@ -1,0 +1,50 @@
+{%  extends "HillCMSSetariaBundle:Default:bootstrap3-template.html.twig" %}
+{% block body %}
+	    {# Use of the foreach here is just a technicality to get the main group without magic#}
+        {% for m in main %}
+            <div class="container jumbotron" style="height:100%">
+                <h1>{{ m["Header"] }}</h1>
+                <p>
+                 {{ m["Block"] | raw}}
+                </p>
+            </div>
+        {% endfor %}	
+{% endblock %}
+{% block footer %}
+	{% include "HillCMSSetariaBundle:Default:footer-template.html.twig"%}
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+	// Parallax functionality
+    (function($) {   
+        $.fn.parallax = function(options) {
+          var windowHeight = $(window).height();
+          // Establish default settings
+          var settings = $.extend({ speed : .15 }, options);
+          // Iterate over each object in collection
+          return this.each( function() {
+            // Save a reference to the element
+            var $this = $(this);
+            // Set up Scroll Handler
+            $(document).scroll(function(){
+              var scrollTop = $(window).scrollTop();
+              var offset = $this.offset().top;
+              var height = $this.outerHeight();
+              // Check if above or below viewport
+              if (offset + height <= scrollTop || offset >= scrollTop + windowHeight) {
+                return;
+              }
+              var yBgPosition = Math.round((offset - scrollTop - 50) * settings.speed);   
+              // Apply the Y Background Position to Set the Parallax Effect
+              $this.css('background-position', 'center ' + yBgPosition + 'px');
+            });
+          });
+        }
+      }(jQuery));
+    // Document ready
+    $(document).ready(function(){
+        // Apply parallax scrolling to jumbotron
+        $('.jumbotron').parallax( { speed : 0.25 } );
+	});
+</script>
+{% endblock %}

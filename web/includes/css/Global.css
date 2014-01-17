@@ -1,0 +1,132 @@
+@CHARSET "UTF-8";
+/*Custom nav*/
+.navbar-inverse{
+    background-color: #eee;
+}
+/*Text blocks for links*/
+.navbar-inverse .navbar-nav>li>a{
+    color: #666;
+    font-weight: 100;
+}
+/*nav hover*/
+.navbar-inverse .navbar-nav>li>a:hover {
+    color: #aaa;
+    background-color: #666;
+}
+.navbar-inverse .navbar-brand{
+    color: #666;
+    font-size: 24px;
+    font-weight: 200;
+}
+.navbar-brand:hover {
+    color:#aaa;
+    background-color: #666;
+}
+/* Jumbotron styles*/
+body {
+  height: 100%;
+  font-size: 16px;
+  padding-bottom: 0px;
+  background: url('/includes/images/Setaria_viridis_001.jpg') no-repeat center center fixed;
+  background-size:cover;
+}
+
+.divider {
+  height:25px;
+}
+
+section {
+  height:500px;
+  padding-top:50px;
+  padding-bottom:50px;
+  overflow:auto;
+}
+
+.jumbotron {
+    color: #666;
+}
+
+
+/*sticky transparent footer*/
+footer{
+	background-color: #eee;
+	color: #666666
+	padding-top: 15px;
+	width: 100%;
+	bottom: 0px;
+	position: relative;
+	height: 20%;
+}
+.footer-section{
+	background-color: #cccccc;
+	padding-bottom: 10px;
+	min-height: 100%;
+	height: 100%;
+    color: #666;
+	
+}
+.footer-section a{
+	color: #666;
+}
+.footer-section h3{
+	border-bottom: #111 1px solid;
+}
+.footer-container{
+	padding-top: 22px;
+	height: 100%;
+}
+.footer-footer{
+	background-color: #ddd;
+	min-width: 100%;
+}
+footer a{
+	font: #fff;
+	underline: off;
+}
+
+input {
+	height:30px;
+}
+
+.btn-delete{
+	background:#FFFFFF;
+	border:#FFFFFF;
+	color: #035D2D;
+	text-decoration: underline;
+	font-size: 31.5px;
+	margin: 0px;
+	margin-bottom: 2px;
+	font-weight:bold;
+}
+
+.ui-widget-header{
+	background: #035D2D;
+	border-color: #035D2D;
+}
+/*muted override*/
+.muted {
+	color: #49D98C;
+	color: #74B2D0;
+}
+/*Useful for anchors*/
+.nav-size {
+	min-height: 70px;
+}
+
+.editable{
+	padding:5px;
+	border: 1px solid;
+}
+
+
+.banner-caption {
+	position: absolute;
+	color: #FFF;
+	font-size: 32px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 15px;
+	background: #333333;
+	background: rgba(0, 0, 0, 0.75);
+}

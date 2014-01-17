@@ -1,0 +1,116 @@
+{%  extends "HillCMSSetariaBundle:Default:bootstrap3-template.html.twig" %}
+{% block body %}
+		
+		<div class="container jumbotron">
+			<a id="status"></a>
+	        <div id ="alert-box" class="alert hidden" style="margin-top:2%">
+	          <button type="button" class="close" data-dismiss="alert">&times;</button> 
+	        </div>
+			<form class="form-horizontal" role="form" id = "blast" action="{{ path("blastlistener") }}">
+			  <div class="form-group">
+  				<label for="algorithm" class="col-lg-2">Algorithm</label>
+				<div class="col-lg-10">
+					<select class="form-control" name = "algorithm" id="algorithm">
+						<option>alg1</option>
+						<option>alg2</option>
+					</select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="name" class="col-lg-2">Name</label>
+				<div class="col-lg-10">
+					<input class="form-control" type ="text" name ="name"></input>
+				</div>
+			  </div>
+				<div class="radio">
+				  <label>
+				    <input class="switch" type="radio" name="input-radio" id="text" value="text">
+					Input query from text.
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input class="toggle-button" type="radio" name="input-radio" id="file" value="file">
+					Input query from file.
+			   	  </label>
+				</div>
+			  <div class="form-group">
+				<label for="query" class="col-lg-2">Query</label>
+				<div class="col-lg-10">
+					<textarea class="form-control" name ="query" rows="4"></textarea>
+				</div>
+			  </div>
+			    <label for="exampleInputFile">File input</label>
+			    <input type="file" id="exampleInputFile" style="font-size: 12px; height=100%">
+			    <p class="help-block" style="font-size:14px">Upload fastq query sequence.</p>
+			  <div class="form-group">
+				<label for="database" class="col-lg-2">Database</label>
+				<div class="col-lg-10">
+					<select name="database" class="form-control">
+						<option>db1</option>
+						<option>db2</option>
+						<option>db3</option>
+					</select>
+				</div>
+			  </div>
+			  <div class="col-lg-2"></div>
+			  <div class="form-button col-lg-3 btn-primary" style="text-align: center">Submit </div>
+			  <div class="col-lg-2"></div>
+			  <div class="form-group col-lg-3 btn-primary" style="text-align:center">Show Advanced options</div> 
+			  <div class="col-lg-2"></div>
+			  
+			</form>
+			
+		</div>	
+{% endblock %}
+{% block footer %}
+	{% include "HillCMSSetariaBundle:Default:footer-template.html.twig"%}
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+var request;
+
+function ajaxWithAlert(event, path, form){
+    if (request) {
+        request.abort();
+    }
+    var $form = form;
+    var closer =  '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+    
+    var $inputs = $form.find("input, select, button, textarea");
+    var serializedData = $form.serialize();
+    $inputs.prop("disabled", true);
+    request = $.ajax({
+        url: path,
+        type: "post",
+        data: serializedData
+    });
+    request.done(function (response, textStatus, jqXHR){
+		//set status, goto anchor
+        location.hash = "#status";
+        $("#alert-box").removeClass("alert-error hidden");
+        $("#alert-box").addClass("alert-success");
+        $("#alert-box").html(closer + response)
+	    
+    });
+	request.fail(function (jqXHR, textStatus, errorThrown){
+		//set status, goto anchor
+        $("#alert-box").removeClass("alert-success hidden");
+        $("#alert-box").addClass("alert-error");
+        $("#alert-box").html(closer + jqXHR.responseText);
+    });
+    request.always(function () {
+    	$(document.body).animate({
+    	    'scrollTop':   $('#status').offset().top
+    	}, 300);
+        $inputs.prop("disabled", false);
+    });
+	event.preventDefault();
+};
+	$(document).ready(function(){
+		$("#blast").submit(function(event){
+			ajaxWithAlert(event, '{{ path("blastlistener") }}', $(this) ) 
+		}); 
+	});
+</script>
+{% endblock %}
