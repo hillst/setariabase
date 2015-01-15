@@ -9,15 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HillCMS\ManageBundle\Entity\CmsPage;
 use HillCMS\ManageBundle\Entity\CmsPageThings; 
 
-class DefaultController extends CMSController
+class NewBlastController extends CMSController
 {
-	private $pid = 3;
+	private $pid = 4;
 	
     public function indexAction()
     {
-    	return $this->render('HillCMSSetariaBundle:Default:index.html.twig', array());
-    																				 
-    																				
+    	return $this->render('HillCMSSetariaBundle:Default:new_blast.html.twig', array());
     	
     }
 }

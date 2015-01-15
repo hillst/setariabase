@@ -1,0 +1,94 @@
+{%  extends "HillCMSSetariaBundle:Default:bootstrap3-template.html.twig" %}
+{% block title %}
+Mailing list
+{% endblock %}
+{% block body %}
+		<input type="hidden" value="{{ asset('includes/images/ajax-loader.gif') }}" id="ajaxloader">
+            <input type="hidden" value="{{ path("mailsend") }}" id="sendmail">
+		<div class="container jumbotron">
+			<a id="status"></a>
+	        <div id ="alert-box" class="alert hidden" style="margin-top:2%">
+	          <button type="button" class="close" data-dismiss="alert">&times;</button> 
+	        </div>
+                <table class="table">
+                    <th>Members</th>
+                {%for email in emails%}
+                    
+                    <tr><td>{{email}}</td></tr>
+                {%endfor%}
+                </table>
+                <h3>Send Mail</h3>
+                <form id="mailer">
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" name="subject" class="form-control"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="body">Body</label>
+                        <textarea rows="4" name="body" class="form-control"></textarea>
+                    </div>
+                    <div id ="submit" class="form-group btn-block btn-primary" style="text-align: center">Submit </div>
+                </form>
+            </div>			
+		</div>	
+    </div>
+{% endblock %}
+{% block footer %}
+	{% include "HillCMSSetariaBundle:Default:footer-template.html.twig"%}
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+    (function($) {
+        $.fn.parallax = function(options) {
+          var windowHeight = $(window).height();
+          // Establish default settings
+          var settings = $.extend({ speed : .15 }, options);
+          // Iterate over each object in collection
+          return this.each( function() {
+            // Save a reference to the element
+            var $this = $(this);
+            // Set up Scroll Handler
+            $(document).scroll(function(){
+              var scrollTop = $(window).scrollTop();
+              var offset = $this.offset().top;
+              var height = $this.outerHeight();
+              // Check if above or below viewport
+              if (offset + height <= scrollTop || offset >= scrollTop + windowHeight) {
+                return;
+              }
+              var yBgPosition = Math.round((offset - scrollTop - 50) * settings.speed);
+              // Apply the Y Background Position to Set the Parallax Effect
+              $this.css('background-position', 'center ' + yBgPosition + 'px');
+            });
+          });
+        }
+      }(jQuery));
+    // Document ready
+	$(document).ready(function(){
+        $("#submit").click(function(){
+                
+            $.ajax(  {
+                url: $("#sendmail").val(),
+                type: "POST",
+                success: function(data){
+                    $("#alert-box").removeClass("alert alert-danger alert-warning success hidden").addClass("alert alert-success");
+                    $("#alert-box").html("Success! " + data);
+                    $("#submit").animate({
+                      backgroundColor: "#7CB02C",
+                      color: "#fff"
+                    }, 1000 );
+                },
+                error: function( xhr, statusText, err){
+                    $("#alert-box").removeClass("alert alert-danger alert-success alert-warning hidden").addClass("alert alert-danger");
+                    $("#alert-box").html(xhr.responseText);
+                },
+                beforeSend: function (){
+                    $("#alert-box").removeClass("alert alert-danger alert-success hidden").addClass("alert alert-warning");
+                    $("#alert-box").html("<img src='"+$("#ajaxloader").val()+"'>");
+                },
+                data: $("#mailer").serialize()
+            });
+        });        
+    });
+</script>
+{% endblock %}

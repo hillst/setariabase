@@ -25,3 +25,12 @@ editusername:
 deletething:
     pattern: /manage/deletething
     defaults: {_controller:HillCMSManageBundle:Default:deletething}
+mail:
+    pattern: /manage/mail
+    defaults: { _controller:HillCMSManageBundle:Mail:index }
+mailsend:
+    pattern: /manage/mailsend
+    defaults: { _controller:HillCMSManageBundle:Mail:send }
+mailremove:
+    pattern: /manage/mailremove
+    defaults: { _controller:HillCMSManageBundle:Mail:remove }

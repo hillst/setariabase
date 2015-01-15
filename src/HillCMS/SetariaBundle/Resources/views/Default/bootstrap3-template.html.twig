@@ -4,7 +4,11 @@
 
 <head>
 <meta charset="utf-8">
-<title>Resource Resources</title>
+<title>
+{%block title%}
+Setaria Viridis Base
+{%endblock%}
+</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -29,13 +33,14 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="home">Spirobase</a>
+				<a class="navbar-brand" href="{{ path("home") }}">Setariabase</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="ftp://ftp.setaria.mocklerlab.org">FTP</a></li>
-					<li><a href="{{ path("jbrowse") }}">JBrowse</a></li>
 					<li><a href="{{ path("blast") }}">BLAST</a></li>
+					<li><a href="{{ path("jbrowse") }}">JBrowse</a></li>
+					<li><a href="{{ path("resources") }}">FTP</a></li>
+					<li><a href="{{ path("mailuser") }}">Mailing List</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
@@ -47,34 +52,10 @@
 	<!-- FOOTER -->
 {% block footer %}
 <footer>
-	<div class="container footer-container">
-		<div class="col-md-3 footer-section">
-			{% block resources %}
-				<h3>Resources</h3>
-					some content
-			{% endblock %}
-		</div> 
-		<div class="col-md-1"></div>
-		<div class="col-md-3 footer-section">
-			{% block sitemap %}
-				<h3>Site Map</h3>
-				some map
-			{% endblock %}
-		</div>
-		<div class="col-md-1"></div>
-		<div class="col-md-3 footer-section">
-			{% block contactus %}
-				<h3>Contact Us</h3>
-				contact info
-			{% endblock %}
-		</div>
-		
-	</div>
 	<div class = "container footer-footer">
 		&copy; 2013 Donald Danforth Plant Science
 			Center
 	</div>
-
 </footer>
 
 
@@ -89,16 +70,8 @@
 	src="{{ asset("includes/js/bootstrap-3.0.0.min.js")}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("footer").css("margin-top", $(document).height() - $("body").height())
-});
-$(document).ready(function(){
 	//set footer heights
-	var heights = $(".footer-section").map(function (){
-		        return $(this).height();
-			}).get(),
-
-	maxHeight = Math.max.apply(null, heights);
-	$(".footer-section").height(maxHeight);
+    
 
 });
 </script>

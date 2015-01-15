@@ -8,16 +8,27 @@ login_check:
     pattern:   /login_check
 logout:
     pattern: /logout
+resources:
+    pattern: /resources
+    defaults: { _controller: HillCMSSetariaBundle:Resources:index }
 jbrowse:
     pattern: /jbrowse
     defaults: { _controller: HillCMSSetariaBundle:JBrowse:index }
 blast:
     pattern: /blast
-    defaults: { _controller: HillCMSSetariaBundle:Blast:index }
-blat:
-    pattern: /blat
-    defaults: { _controller: HillCMSSetariaBundle:Blat:index }
+    defaults: { _controller: HillCMSSetariaBundle:NewBlast:index }
 blastlistener:
     pattern: /blastlistener
     defaults: { _controller: HillCMSSetariaBundle:Blast:blastListener }
-
+blasttokensplain:
+    pattern: /results
+    defaults: { _controller: HillCMSSetariaBundle:Blast:blastResults }
+blasttoken:
+    pattern: /results/{token}
+    defaults: { _controller: HillCMSSetariaBundle:Blast:blastResults }
+mailuser:
+    pattern: /mailuser
+    defaults: { _controller:HillCMSManageBundle:Mail:userView }
+mailadd:
+    pattern: /addUser
+    defaults: { _controller:HillCMSManageBundle:Mail:addUser }

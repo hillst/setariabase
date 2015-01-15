@@ -1,4 +1,7 @@
 {%  extends "HillCMSSetariaBundle:Default:bootstrap3-template.html.twig" %}
+{% block title %}
+BLAST
+{% endblock %}
 {% block body %}
 		
 		<div class="container jumbotron">
@@ -6,111 +9,217 @@
 	        <div id ="alert-box" class="alert hidden" style="margin-top:2%">
 	          <button type="button" class="close" data-dismiss="alert">&times;</button> 
 	        </div>
-			<form class="form-horizontal" role="form" id = "blast" action="{{ path("blastlistener") }}">
+            <input type="hidden" value="{{ asset('includes/images/ajax-loader.gif') }}" id="ajaxloader">
+		    <input type="hidden" value="{{ path("blastlistener") }}" id="blastlistener">	
+            <input type="hidden" value="{{ path("blasttokensplain") }}" id="blasttokensplain">
+            <form enctype="multipart/form-data" class="form-horizontal" role="form" id = "blast">
 			  <div class="form-group">
   				<label for="algorithm" class="col-lg-2">Algorithm</label>
 				<div class="col-lg-10">
 					<select class="form-control" name = "algorithm" id="algorithm">
-						<option>alg1</option>
-						<option>alg2</option>
+						<option value='blastn'>BLASTN</option>
+						<option value='blastp'>BLASTP</option>
+						<option value='blastx'>BLASTX</option>
 					</select>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label for="name" class="col-lg-2">Name</label>
-				<div class="col-lg-10">
-					<input class="form-control" type ="text" name ="name"></input>
 				</div>
 			  </div>
 				<div class="radio">
 				  <label>
-				    <input class="switch" type="radio" name="input-radio" id="text" value="text">
+				    <input class="switch" type="radio" name="input-radio" id="query-select" value="text" checked>
 					Input query from text.
 				  </label>
 				</div>
 				<div class="radio">
 				  <label>
-				    <input class="toggle-button" type="radio" name="input-radio" id="file" value="file">
-					Input query from file.
+				    <input class="toggle-button" type="radio" name="input-radio" id="file-select" value="file">
+					Input query from fasta file.
 			   	  </label>
 				</div>
-			  <div class="form-group">
-				<label for="query" class="col-lg-2">Query</label>
-				<div class="col-lg-10">
-					<textarea class="form-control" name ="query" rows="4"></textarea>
-				</div>
-			  </div>
+              <div id ="query">
+                  <div class="form-group">
+                    <label for="name" class="col-lg-2">Name</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type ="text" name ="name"></input>
+                    </div>
+                  </div>  
+                  <div class="form-group">
+                    <label for="query" class="col-lg-2">Query</label>
+                    <div class="col-lg-10">
+                        <textarea class="form-control" name ="query" rows="4"></textarea>
+                    </div>
+                  </div>
+              </div>
+              <div id="file" >
+                <div class="form-group" id="fasta-query">
+                    <label for="query" class="col-lg-2">Paste fasta into the text box</label>
+                    <div class="col-lg-10">
+                        <textarea class="form-control" name ="fasta-query" rows="4"></textarea>
+                    </div>
+                <!-- file upload code, fix when there is time
 			    <label for="exampleInputFile">File input</label>
-			    <input type="file" id="exampleInputFile" style="font-size: 12px; height=100%">
-			    <p class="help-block" style="font-size:14px">Upload fastq query sequence.</p>
-			  <div class="form-group">
+			    <input type="file" name="queryFile" id="queryFile" style="font-size: 12px; height=100%">
+			    <p class="help-block" style="font-size:14px">Upload fasta query sequence.</p>
+			    -->  
+                </div>
+              </div>
+              <div class="form-group">
 				<label for="database" class="col-lg-2">Database</label>
 				<div class="col-lg-10">
-					<select name="database" class="form-control">
-						<option>db1</option>
-						<option>db2</option>
-						<option>db3</option>
+					<select id="database" name="database" class="form-control">
+						<option value="Setaria_viridis/Setaria_viridis">S. viridis-01 Genome (NT)</option>
+						<option value="Setaria_viridis/Setaria_viridis_CDS">S. viridis-01 CDS (NT)</option>
+						<option value="Setaria_viridis/Setaria_viridis_transcripts">S. viridis-01 Transcripts (NT)</option>
 					</select>
 				</div>
 			  </div>
+              <div id="advanced">
+                <div class="form-group">
+                    <label class="col-lg-2" for="evalue">Expectation Threshold 1e**</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" name="evalue" placeholder="9.82"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2" for="wordsize" >Word Size</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" name="wordsize" placeholder="11"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2" for="disallowgaps">Disallow Gaps</label>
+                    <input name="disallowgaps" type="checkbox"></input>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2" for="filter">Filter</label>
+                    <input name="filter" type="checkbox" checked></input>
+                </div>
+              </div>
 			  <div class="col-lg-2"></div>
-			  <div class="form-button col-lg-3 btn-primary" style="text-align: center">Submit </div>
+			  <div id ="submit" class="form-group col-lg-3 btn-primary" style="text-align: center">Submit </div>
 			  <div class="col-lg-2"></div>
-			  <div class="form-group col-lg-3 btn-primary" style="text-align:center">Show Advanced options</div> 
+			  <div id="show-advanced" class="form-group col-lg-3 btn-primary" style="text-align:center">Show Advanced options</div> 
 			  <div class="col-lg-2"></div>
 			  
 			</form>
-			
+            <div class="hidden">
+                <div id="proteindbs">
+                    <option value="Setaria_viridis/Setaria_viridis_CDS">S. viridis-01 Proteins (AA)</option>
+                </div>
+                <div id="nucleotidedbs">
+                    <option value="Setaria_viridis/Setaria_viridis">S. viridis-01 Genome (NT)</option>
+                    <option value="Setaria_viridis/Setaria_viridis_CDS">S. viridis-01 CDS (NT)</option>
+                    <option value="Setaria_viridis/Setaria_viridis_transcripts">S. viridis-01 Transcripts (NT)</option>
+                </div>
+            </div>			
 		</div>	
+    </div>
 {% endblock %}
 {% block footer %}
 	{% include "HillCMSSetariaBundle:Default:footer-template.html.twig"%}
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript">
-var request;
-
-function ajaxWithAlert(event, path, form){
-    if (request) {
-        request.abort();
-    }
-    var $form = form;
-    var closer =  '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-    
-    var $inputs = $form.find("input, select, button, textarea");
-    var serializedData = $form.serialize();
-    $inputs.prop("disabled", true);
-    request = $.ajax({
-        url: path,
-        type: "post",
-        data: serializedData
-    });
-    request.done(function (response, textStatus, jqXHR){
-		//set status, goto anchor
-        location.hash = "#status";
-        $("#alert-box").removeClass("alert-error hidden");
-        $("#alert-box").addClass("alert-success");
-        $("#alert-box").html(closer + response)
-	    
-    });
-	request.fail(function (jqXHR, textStatus, errorThrown){
-		//set status, goto anchor
-        $("#alert-box").removeClass("alert-success hidden");
-        $("#alert-box").addClass("alert-error");
-        $("#alert-box").html(closer + jqXHR.responseText);
-    });
-    request.always(function () {
-    	$(document.body).animate({
-    	    'scrollTop':   $('#status').offset().top
-    	}, 300);
-        $inputs.prop("disabled", false);
-    });
-	event.preventDefault();
-};
+    (function($) {
+        $.fn.parallax = function(options) {
+          var windowHeight = $(window).height();
+          // Establish default settings
+          var settings = $.extend({ speed : .15 }, options);
+          // Iterate over each object in collection
+          return this.each( function() {
+            // Save a reference to the element
+            var $this = $(this);
+            // Set up Scroll Handler
+            $(document).scroll(function(){
+              var scrollTop = $(window).scrollTop();
+              var offset = $this.offset().top;
+              var height = $this.outerHeight();
+              // Check if above or below viewport
+              if (offset + height <= scrollTop || offset >= scrollTop + windowHeight) {
+                return;
+              }
+              var yBgPosition = Math.round((offset - scrollTop - 50) * settings.speed);
+              // Apply the Y Background Position to Set the Parallax Effect
+              $this.css('background-position', 'center ' + yBgPosition + 'px');
+            });
+          });
+        }
+      }(jQuery));
+    // Document ready
 	$(document).ready(function(){
-		$("#blast").submit(function(event){
-			ajaxWithAlert(event, '{{ path("blastlistener") }}', $(this) ) 
-		}); 
-	});
+        //switch available databases based on selected algorithm
+        $("#algorithm").change(function(){
+                var selected = $( "#algorithm option:selected" ).val();
+                if (selected == "blastp" || selected == "blastx"){
+                    $("#database").html($("#proteindbs").html());
+                } else{
+                    $("#database").html($("#nucleotidedbs").html());
+                }
+        });
+        $("#algorithm").change(); //call the event as soon as page loads, retains back button function
+        // Apply parallax scrolling to vody
+        $('body').parallax( { speed : 0.25 } );
+		$("#file").hide();//maybe start hidden
+        $("#advanced").hide()
+        function showAdvanced(){
+            $("#advanced").fadeIn(1000);
+            $("#show-advanced").text("Hide Advanced options");
+            $("#show-advanced").unbind("click");
+            $("#show-advanced").click(hideAdvanced);
+            $("footer").css("position","relative"); //lol
+        }
+        function hideAdvanced(){
+            $("#advanced").fadeOut(1000);
+            $("#show-advanced").text("Show Advanced options");
+            $("#show-advanced").unbind("click");
+            $("#show-advanced").click(showAdvanced);
+            $("footer").css("position","absolute"); //lol
+        }
+        $("#show-advanced").click(showAdvanced);
+	    $("#file-select").click(function(){
+            $("#query").fadeOut(500, function(){$("#file").fadeIn(500)});    
+        });
+        $("#query-select").click(function(){
+            $("#file").fadeOut(500, function(){ $("#query").fadeIn(500)});
+        });
+        //form submission
+        $("#submit").click(function(){
+                
+            $.ajax(  {
+                url: $("#blastlistener").val(),
+                type: "GET",
+                xhr: function() {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if(myXhr.upload){ //check for upload existance
+                    //progress function
+                        //my.Xhr.upload.addEventListener('progress', progressHandler, false);
+                    }
+                        return myXhr;
+                },
+                success: function(data){
+                    $("#alert-box").removeClass("alert alert-danger alert-warning success hidden").addClass("alert alert-success");
+                    $("#alert-box").html("Success!");
+                    $("#submit").animate({
+                      backgroundColor: "#7CB02C",
+                      color: "#fff"
+                    }, 1000 );
+                    $("#submit").attr("href", $("#blasttokensplain").val() + "/" + data );
+                    $("#submit").html("Click to see Results");
+                    $("#submit").unbind("click");
+                    $("#submit").click(function(){
+                        window.location = $("#blasttokensplain").val() + "/" + data;
+                    }); 
+                },
+                error: function( xhr, statusText, err){
+                    $("#alert-box").removeClass("alert alert-danger alert-success alert-warning hidden").addClass("alert alert-danger");
+                    $("#alert-box").html(xhr.responseText);
+                },
+                beforeSend: function (){
+                    $("#alert-box").removeClass("alert alert-danger alert-success hidden").addClass("alert alert-warning");
+                    $("#alert-box").html("<img src='"+$("#ajaxloader").val()+"'>");
+                },
+                data: $("#blast").serialize()
+            });
+        });        
+    });
 </script>
 {% endblock %}

@@ -1,14 +1,56 @@
 {%  extends "HillCMSSetariaBundle:Default:bootstrap3-template.html.twig" %}
 {% block body %}
 	    {# Use of the foreach here is just a technicality to get the main group without magic#}
-        {% for m in main %}
             <div class="container jumbotron" style="height:100%">
-                <h1>{{ m["Header"] }}</h1>
-                <p>
-                 {{ m["Block"] | raw}}
-                </p>
+                <h1 style="text-align:center;padding-bottom: 100px">Setaria viridis</h1>
+                <div class="row featurette">
+                    <div class="col-md-7">
+                        <h2 class="featurette-heading">BLAST Database</h2>
+                        <div class="text-muted">Submit queries to our custom BLAST Database</div>
+                        <p class="featurette-text">Our BLAST databases include, nucleotide, protein, and transcripts. Use the BLASTN, BLASTP, or BLASTX algorithms.</p>
+                        <a class="btn btn-large btn-primary" href="{{ path("blast") }}">Go Now</a>
+                    </div>
+                    <div class="col-md-5">
+                        <img class="featurette-image img-responsive" src="{{ asset("includes/images/setaria3.jpg") }}">
+                    </div>
+                </div>
+                <hr class="featurette-divider">
+                <div class="row featurette">
+                    <div class="col-md-5">
+                        <img class="featurette-image img-responsive" src="{{ asset("includes/images/setaria2.jpg") }}">
+                    </div>
+                    <div class="col-md-7">
+                        <h2 class="featurette-heading">JBrowse Genome Browser</h2>
+                        <div class="text-muted">Visualize our data.</div>
+                        <p class="featurette-text">Our current transcript and genome models are default tracks on our JBrowse.</p>
+                        <a class="btn btn-large btn-primary" href="{{ path("jbrowse") }}">Go Now</a>
+                    </div>
+                </div>
+                <hr class="featurette-divider">
+                <div class="row featurette">
+                    <div class="col-md-7">
+                        <h2 class="featurette-heading">Browse Our up-to-date Resources</h2>
+                        <div class="text-muted">FTP Directory</div>
+                        <p class="featurette-text">All of our resources associated with the Setaria viridis project are kept up to date in one place.</p>
+                        <a class="btn btn-large btn-primary" href="{{ asset("resources") }}">Go Now</a>
+                    </div>
+                    <div class="col-md-5">
+                        <img class="featurette-image img-responsive" src="{{ asset("includes/images/setaria1.jpg") }}">
+                    </div>
+                </div>
+                <hr class="featurette-divider">
+                  <div class="row featurette">
+                    <div class="col-md-5">
+                        <img class="featurette-image img-responsive" src="{{ asset("includes/images/setaria4.jpg") }}">
+                    </div>
+                    <div class="col-md-7">
+                        <h2 class="featurette-heading">News</h2>
+                        <div class="text-muted">Join our mailing list</div>
+                        <p class="featurette-text">Sign up for our mailing list to recieve updates about the project. Have a request? Feel free to email us yourself.</p>
+                        <a class="btn btn-large btn-primary" href="{{ path("mailuser")}}">Go Now</a>
+                    </div>
+                  </div>
             </div>
-        {% endfor %}	
 {% endblock %}
 {% block footer %}
 	{% include "HillCMSSetariaBundle:Default:footer-template.html.twig"%}
@@ -44,7 +86,7 @@
     // Document ready
     $(document).ready(function(){
         // Apply parallax scrolling to jumbotron
-        $('.jumbotron').parallax( { speed : 0.25 } );
+        $('body').parallax( { speed : 0.15 } );
 	});
 </script>
 {% endblock %}

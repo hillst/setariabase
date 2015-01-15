@@ -9,15 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HillCMS\ManageBundle\Entity\CmsPage;
 use HillCMS\ManageBundle\Entity\CmsPageThings; 
 
-class DefaultController extends CMSController
+class ResourcesController extends CMSController
 {
 	private $pid = 3;
 	
-    public function indexAction()
-    {
-    	return $this->render('HillCMSSetariaBundle:Default:index.html.twig', array());
-    																				 
-    																				
+    public function indexAction(){
+    	return $this->render('HillCMSSetariaBundle:Default:resources.html.twig', array());
     	
     }
 }
